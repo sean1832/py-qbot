@@ -1,6 +1,7 @@
 import argparse
 import json
 import logging
+from datetime import datetime
 from pathlib import Path
 
 from py_qbot import __version__, logger
@@ -72,6 +73,31 @@ def parser() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def configure_logging(dir: Path, debug: bool) -> None:
+    # Ensure your log directory exists
+    dir.mkdir(parents=True, exist_ok=True)
+
+    # Compute today’s filename
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    log_path = dir / f"{date_str}.log"
+
+    # Pick your level
+    level = logging.DEBUG if debug else logging.INFO
+
+    # Create handlers
+    handlers = []  #  type is list[Any], so you can mix handlers
+    handlers.append(logging.FileHandler(log_path, encoding="utf-8"))
+    handlers.append(logging.StreamHandler())
+
+    # Apply configuration
+    logging.basicConfig(
+        level=level,
+        format="%(asctime)s - [%(levelname)s] - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+        handlers=handlers,
+    )
+
+
 def parse_extra_args(extra: str, key_value_delimiter: str = ":") -> dict[str, str]:
     if not extra:
         return {}
@@ -96,18 +122,7 @@ def parse_extra_args(extra: str, key_value_delimiter: str = ":") -> dict[str, st
 def main():
     args = parser()
     # Configure logging
-    if args.debug:
-        logging.basicConfig(
-            level=logging.DEBUG,
-            format="%(asctime)s - [%(levelname)s] - %(message)s",
-            datefmt="%Y-%m-%d %H:%M:%S",
-        )
-    else:
-        logging.basicConfig(
-            level=logging.INFO,
-            format="%(asctime)s - [%(levelname)s] - %(message)s",
-            datefmt="%Y-%m-%d %H:%M:%S",
-        )
+    configure_logging(Path(".log").resolve(), args.debug)
 
     # parse configuration file
     if not args.config.endswith(".json"):

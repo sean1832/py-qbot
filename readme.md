@@ -63,6 +63,10 @@ py-qbot `
 | `--debug`           | (optional) Turn on DEBUG‑level logging                                                                                                                        |
 | `--extra <args>`    | (optional) Semi‑colon‑separated `key:value` pairs. Supported keys:<br>• `FILTER`: overrides `--filter`  <br>• `EXCLUDE`: pipe‑delimited extra dirs to exclude |
 
+## Inspect Log
+After running `py-qbot`, check the log file in the `.log` directory.
+It will be named with the current date, e.g. `2023-10-01.log`.
+
 ## Examples
 
 **Season 1 of One Piece**
