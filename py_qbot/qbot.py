@@ -58,7 +58,6 @@ class QBot:
 
         # format
         format = self.config.categories[category].format
-
         # run filebot
         self.filebot.rename(
             path=str(self.config.temp_dir / media_name),
@@ -67,10 +66,11 @@ class QBot:
             db=db,
             manual_query=media_name,
             conflict="skip",
-            action="copy",
+            action="move",
             format=format,
             non_strict=is_fuzzy,
         )
+        self._cleanup_directory(self.config.temp_dir / media_name)
 
     def _move_files(self, files: List[Path], input_root: Path, output_root: Path):
         result_files = []
@@ -84,7 +84,7 @@ class QBot:
             # make sure parent folders exist
             dest.parent.mkdir(parents=True, exist_ok=True)
             # move the file
-            shutil.copy2(str(src), str(dest))  # todo: change to move
+            shutil.move(str(src), str(dest))
             logger.debug(f"MOVED ({src}) -> ({dest})")
 
             result_files.append(dest)
@@ -101,6 +101,9 @@ class QBot:
                 shutil.rmtree(item)
             else:
                 item.unlink()
+        # Remove the directory itself if it's empty
+        if not any(path.iterdir()):
+            path.rmdir()
         logger.debug(f"Cleaned up directory: {path}")
 
     def _list_files(
