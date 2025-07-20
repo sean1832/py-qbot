@@ -72,8 +72,8 @@ It will be named with the current date, e.g. `2023-10-01.log`.
 **Season 1 of One Piece**
 
 ```bash
-py-qbot -c config.json -i ~/Downloads/OnePiece \
-  -n "One Piece" -c anime -f "s==1" --fuzzy
+py-qbot --config config.json --input ~/Downloads/OnePiece \
+  --name "One Piece" --category anime --filter "s==1" --fuzzy
 ```
 
 **Add extra exclude dirs**
@@ -86,16 +86,16 @@ py-qbot ... --extra "EXCLUDE:sample|subs|extra_dir"
 
 ## Qbittorent Integration
 If you're using qbittorrent, you can set up post‑processing scripts to call `py-qbot` automatically after downloads complete.
-Following assume you installed `py-qbot` in a virtual environment and is available in the `~/py-qbot/venv/bin` directory.
+Following assume you installed `py-qbot` in a virtual environment and is available in the `/root/py-qbot/venv/bin` directory.
 
 ```bash
-~/py-qbot/venv/bin/py-qbot --config ~/py-qbot/config.json --input %F --name %N --category %L --extra %G --fuzzy
+/root/py-qbot/venv/bin/py-qbot --config /root/py-qbot/config.json --input %F --name %N --category %L --extra %G --fuzzy
 ```
 
 or shortened:
 
 ```bash
-~/py-qbot/venv/bin/py-qbot -c ~/py-qbot/config.json -i %F -n %N -c %L --extra %G --fuzzy
+/root/py-qbot/venv/bin/py-qbot --config /root/py-qbot/config.json -i %F -n %N -c %L --extra %G --fuzzy
 ```
 
 where:
