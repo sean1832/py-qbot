@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py-qbot"
+dynamic = ["version"]
+requires-python = ">=3.8"
+dependencies = []
+description = "python wrapper for qbittorrent post-processing using filebot"
+readme = { file = "readme.md", content-type = "text/markdown" }
+
+[project.scripts]
+py-qbot = "py_qbot.cli:main"
+
+[tool.setuptools.dynamic.version]
+attr = "py_qbot.__version__"

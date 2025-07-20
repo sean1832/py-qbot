@@ -1,0 +1,27 @@
+{
+  "temp_dir": "/mnt/nas/Media/.temp",
+
+  "defaults": {
+    "exclude_dirs": [],
+    "match_patterns": ["*.mkv","*.mp4","*.avi","*.mov","*.rmvb","*.webm"]
+  },
+
+  "categories": {
+    "anime": {
+      "path":    "/mnt/nas/Media/animes",
+      "format":  "{n}/Season {s}/{n} - {s00e00} - {t}",
+      "db":      "TheMovieDB::TV",
+      "exclude_dirs": ["CDs","Scans","SPs","Extras"]
+    },
+    "tv": {
+      "path":    "/mnt/nas/Media/tv-shows",
+      "format":  "{n}/Season {s}/{n} - {s00e00} - {t}",
+      "db":      "TheMovieDB::TV"
+    },
+    "movie": {
+      "path":    "/mnt/nas/Media/movies",
+      "format":  "{n} ({y})/{n} ({y})",
+      "db":      "TheMovieDB"
+    }
+  }
+}
