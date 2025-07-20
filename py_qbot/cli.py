@@ -136,7 +136,7 @@ def main():
     if not args.config.endswith(".json"):
         logger.error("Configuration file must be a JSON file. Please provide a valid path.")
         return
-    with open(args.config, "r") as f:
+    with open(Path(args.config).expanduser().resolve(), "r") as f:
         try:
             config_data = json.load(f)
         except json.JSONDecodeError as e:
@@ -156,7 +156,7 @@ def main():
 
     with QBot(config) as qbot:
         # Ensure input path is absolute
-        args.input = Path(args.input).resolve()
+        args.input = Path(args.input).expanduser().resolve()
         if not args.input.exists() or not args.input.is_dir():
             print(f"Input directory '{args.input}' does not exist or is not a directory.")
             return
