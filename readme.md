@@ -85,13 +85,13 @@ If you're using qbittorrent, you can set up post‑processing scripts to call `p
 Following assume you installed `py-qbot` in a virtual environment and is available in the `~/py-qbot/venv/bin` directory.
 
 ```bash
-~/py-qbot/venv/bin/py-qbot --config /path/to/config.json --input %F --name %N --category %L --extra %G --fuzzy
+~/py-qbot/venv/bin/py-qbot --config ~/py-qbot/config.json --input %F --name %N --category %L --extra %G --fuzzy
 ```
 
 or shortened:
 
 ```bash
-~/py-qbot/venv/bin/py-qbot -c /path/to/config.json -i %F -n %N -c %L --extra %G --fuzzy
+~/py-qbot/venv/bin/py-qbot -c ~/py-qbot/config.json -i %F -n %N -c %L --extra %G --fuzzy
 ```
 
 where:
