@@ -65,7 +65,7 @@ py-qbot `
 | `--log <dir>`       | (optional) Path to the log file. Defaults to `~/py-qbot/logs` directory.                                                                                      |
 
 ## Inspect Log
-After running `py-qbot`, check the log file in the `.log` directory.
+After running `py-qbot`, check the log file in the `~/py-qbot/logs` directory.
 It will be named with the current date, e.g. `2023-10-01.log`.
 
 ## Examples
