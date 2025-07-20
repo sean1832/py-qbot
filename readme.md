@@ -62,6 +62,7 @@ py-qbot `
 | `--fuzzy`           | (optional) Enable fuzzy name matching                                                                                                                         |
 | `--debug`           | (optional) Turn on DEBUG‑level logging                                                                                                                        |
 | `--extra <args>`    | (optional) Semi‑colon‑separated `key:value` pairs. Supported keys:<br>• `FILTER`: overrides `--filter`  <br>• `EXCLUDE`: pipe‑delimited extra dirs to exclude |
+| `--log <dir>`       | (optional) Path to the log file. Defaults to `~/py-qbot/logs` directory.                                                                                      |
 
 ## Inspect Log
 After running `py-qbot`, check the log file in the `.log` directory.

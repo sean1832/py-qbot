@@ -69,6 +69,11 @@ def parser() -> argparse.Namespace:
         type=str,
         help="(Optional) Extra arguments to pass to the script. semi-colon-separated key:value pairs. supported keys: 'FILTER', 'EXCLUDE'",
     )
+    parser.add_argument(
+        "--log",
+        type=str,
+        help="(Optional) Path to the log file",
+    )
 
     return parser.parse_args()
 
@@ -121,8 +126,11 @@ def parse_extra_args(extra: str, key_value_delimiter: str = ":") -> dict[str, st
 
 def main():
     args = parser()
+    log_raw = args.log or "~/py-qbot/logs"
+    log_dir = Path(log_raw).expanduser().resolve()
+
     # Configure logging
-    configure_logging(Path(".log").resolve(), args.debug)
+    configure_logging(log_dir, args.debug)
 
     # parse configuration file
     if not args.config.endswith(".json"):
