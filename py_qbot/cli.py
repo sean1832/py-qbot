@@ -29,7 +29,6 @@ def parser() -> argparse.Namespace:
         "-n",
         "--name",
         type=str,
-        required=True,
         help="Name for the media files",
     )
     parser.add_argument(
@@ -148,6 +147,18 @@ def main():
     extra_args = parse_extra_args(args.extra)
     filter = extra_args.get("FILTER", args.filter)
     exclude_dir_str = extra_args.get("EXCLUDE", None)
+    # parse NAME argument
+    if not args.name and "NAME" not in extra_args:
+        logger.error("Media name is required. Please provide a name using -n or --name.")
+        return
+    title = extra_args.get("NAME", str(args.name)).strip()
+    if title == "":
+        if not args.name:
+            logger.error("Media name cannot be empty. Please provide a valid name.")
+            return
+        else:
+            title = str(args.name).strip()
+
     if exclude_dir_str:
         # Convert the exclude directories to a list
         exclude_dirs = [d.strip() for d in exclude_dir_str.split("|") if d.strip()]
@@ -164,7 +175,7 @@ def main():
         # Perform renaming operation
         qbot.rename(
             input_root=Path(args.input).resolve(),
-            media_name=args.name,
+            media_name=title,
             category=args.category,
             filter=filter,
             is_fuzzy=args.fuzzy,
