@@ -107,7 +107,7 @@ def parse_extra_args(extra: str, key_value_delimiter: str = ":") -> dict[str, st
         return {}
 
     result = {}
-    for item in extra.split(";"):
+    for item in extra.split(","):
         if not item.strip():
             continue  # skip empty items
         if key_value_delimiter not in item:
@@ -161,7 +161,7 @@ def main():
 
     if exclude_dir_str:
         # Convert the exclude directories to a list
-        exclude_dirs = [d.strip() for d in exclude_dir_str.split("|") if d.strip()]
+        exclude_dirs = [d.strip() for d in exclude_dir_str.split(";") if d.strip()]
         config.categories[args.category].exclude_dirs.extend(exclude_dirs)
         logger.debug(f"Added extra exclude directories: {exclude_dirs}")
 

@@ -52,17 +52,17 @@ py-qbot `
 
 ### CLI Arguments
 
-| Flag                | Description                                                                                                                                                   |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--config <file>`   | (required) Path to your JSON config                                                                                                                           |
-| `-i, --input <dir>` | (required) Directory with media files to rename                                                                                                               |
-| `-n, --name <str>`  | (required) Media title or base name                                                                                                                           |
-| `-c, --category`    | (required) One of: `anime`, `tv`, `movie`                                                                                                                     |
-| `-f, --filter`      | (optional) FileBot filter expression (e.g. `s==1`)                                                                                                            |
-| `--fuzzy`           | (optional) Enable fuzzy name matching                                                                                                                         |
-| `--debug`           | (optional) Turn on DEBUG‑level logging                                                                                                                        |
-| `--extra <args>`    | (optional) Semi‑colon‑separated `key:value` pairs. Supported keys:<br>• `FILTER`: overrides `--filter`  <br>• `EXCLUDE`: pipe‑delimited extra dirs to exclude |
-| `--log <dir>`       | (optional) Path to the log file. Defaults to `~/py-qbot/logs` directory.                                                                                      |
+| Flag                | Description                                                                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--config <file>`   | (required) Path to your JSON config                                                                                                                          |
+| `-i, --input <dir>` | (required) Directory with media files to rename                                                                                                              |
+| `-n, --name <str>`  | (required) Media title or base name                                                                                                                          |
+| `-c, --category`    | (required) One of: `anime`, `tv`, `movie`                                                                                                                    |
+| `-f, --filter`      | (optional) FileBot filter expression (e.g. `s==1`)                                                                                                           |
+| `--fuzzy`           | (optional) Enable fuzzy name matching                                                                                                                        |
+| `--debug`           | (optional) Turn on DEBUG‑level logging                                                                                                                       |
+| `--extra <args>`    | (optional) Semi‑colon‑separated `key:value` pairs. Supported keys:<br>• `FILTER`: overrides `--filter`  <br>• `EXCLUDE`: `;` separated extra dirs to exclude |
+| `--log <dir>`       | (optional) Path to the log file. Defaults to `~/py-qbot/logs` directory.                                                                                     |
 
 ## Inspect Log
 After running `py-qbot`, check the log file in the `~/py-qbot/logs` directory.
@@ -80,7 +80,7 @@ py-qbot --config config.json --input ~/Downloads/OnePiece \
 **Add extra exclude dirs**
 
 ```bash
-py-qbot ... --extra "EXCLUDE:sample|subs|extra_dir"
+py-qbot ... --extra "EXCLUDE:sample;subs;extra_dir"
 ```
 
 > In reality, working with qbittorent, you'd likely input this as tags.
@@ -103,4 +103,4 @@ where:
 - `%F` is the download folder
 - `%N` is the torrent name
 - `%L` is the category (e.g. `anime`, `tv`, `movie`)
-- `%G` is any extra tags you want to pass (e.g. `FILTER:s==1;EXCLUDE:sample|subs`)
+- `%G` is any extra tags you want to pass (e.g. `FILTER:s==1,EXCLUDE:sample;subs`)
