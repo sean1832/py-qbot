@@ -6,6 +6,7 @@ from pathlib import Path
 
 from py_qbot import __version__, logger
 from py_qbot.config import QBotConfig
+from py_qbot.extra_argument import ExtraArgument
 from py_qbot.qbot import QBot
 
 
@@ -144,14 +145,12 @@ def main():
     config = QBotConfig(config_data)
 
     # parse extra arguments
-    extra_args = parse_extra_args(args.extra)
-    filter = extra_args.get("FILTER", args.filter)
-    exclude_dir_str = extra_args.get("EXCLUDE", None)
-    # parse NAME argument
-    if not args.name and "NAME" not in extra_args:
+    extra_args = ExtraArgument(args.extra)
+    filter = extra_args.filter or args.filter
+    if not args.name and not extra_args.name:
         logger.error("Media name is required. Please provide a name using -n or --name.")
         return
-    title = extra_args.get("NAME", str(args.name)).strip()
+    title = extra_args.name or str(args.name).strip()
     if title == "":
         if not args.name:
             logger.error("Media name cannot be empty. Please provide a valid name.")
@@ -159,11 +158,10 @@ def main():
         else:
             title = str(args.name).strip()
 
-    if exclude_dir_str:
-        # Convert the exclude directories to a list
-        exclude_dirs = [d.strip() for d in exclude_dir_str.split(";") if d.strip()]
-        config.categories[args.category].exclude_dirs.extend(exclude_dirs)
-        logger.debug(f"Added extra exclude directories: {exclude_dirs}")
+    if extra_args.excludes and len(extra_args.excludes) > 0:
+        # extend the exclude directories for the specified category
+        config.categories[args.category].exclude_dirs.extend(extra_args.excludes)
+        logger.debug(f"Added extra exclude directories: {extra_args.excludes}")
 
     with QBot(config) as qbot:
         # Ensure input path is absolute
