@@ -93,6 +93,11 @@ class FileBot:
             if e.stderr:
                 logger.error("\n=== stderr ===\n%s", e.stderr.rstrip())
 
+            raise RuntimeError(
+                f"FileBot command failed with exit code {e.returncode}. "
+                "Check the logs for more details."
+            ) from e
+
     @staticmethod
     def _find_filebot() -> str | None:
         """

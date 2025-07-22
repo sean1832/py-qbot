@@ -59,18 +59,21 @@ class QBot:
         # format
         format = self.config.categories[category].format
         # run filebot
-        self.filebot.rename(
-            path=str(self.config.temp_dir / media_name),
-            output=str(output),
-            filter=filter,
-            db=db,
-            manual_query=media_name,
-            conflict="skip",
-            action="move",
-            format=format,
-            non_strict=is_fuzzy,
-        )
-        self._cleanup_directory(self.config.temp_dir / media_name)
+        try:
+            self.filebot.rename(
+                path=str(self.config.temp_dir / media_name),
+                output=str(output),
+                filter=filter,
+                db=db,
+                manual_query=media_name,
+                conflict="skip",
+                action="move",
+                format=format,
+                non_strict=is_fuzzy,
+            )
+            self._cleanup_directory(self.config.temp_dir / media_name)
+        except Exception:
+            logger.error(f"Error renaming files for '{media_name}'")
 
     def _move_files(self, files: List[Path], input_root: Path, output_root: Path):
         result_files = []
