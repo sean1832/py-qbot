@@ -66,7 +66,7 @@ class QBot:
                 filter=filter,
                 db=db,
                 manual_query=media_name,
-                conflict="skip",
+                conflict="replace",
                 action="move",
                 format=format,
                 non_strict=is_fuzzy,
