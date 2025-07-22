@@ -53,6 +53,12 @@ def parser() -> argparse.Namespace:
         help="(Optional) Enable fuzzy matching for media names",
     )
     parser.add_argument(
+        "--direct",
+        action="store_true",
+        default=False,
+        help="(Optional) Use direct renaming without staging in a temporary directory",
+    )
+    parser.add_argument(
         "-v",
         "--version",
         action="version",
@@ -163,6 +169,7 @@ def main():
         config.categories[args.category].exclude_dirs.extend(extra_args.excludes)
         logger.debug(f"Added extra exclude directories: {extra_args.excludes}")
 
+    is_direct = args.direct or extra_args.is_direct
     with QBot(config) as qbot:
         # Ensure input path is absolute
         args.input = Path(args.input).expanduser().resolve()
@@ -177,6 +184,7 @@ def main():
             category=args.category,
             filter=filter,
             is_fuzzy=args.fuzzy,
+            use_temp=not is_direct,
         )
 
 

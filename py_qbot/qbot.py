@@ -32,37 +32,38 @@ class QBot:
         category: Literal["anime", "tv", "movie"],
         filter: Optional[str] = None,
         is_fuzzy: bool = False,
+        use_temp: bool = True,
     ):
-        exclude_dirs = self.config.categories[category].exclude_dirs
-        match_patterns = self.config.categories[category].match_patterns
+        # Gather config
+        media_type = self.config.categories.get(category)
+        if not media_type:
+            logger.error(f"Invalid category '{category}'")
+            return
 
+        exclude_dirs: List[str] = media_type.exclude_dirs
+        match_patterns: List[str] = media_type.match_patterns
+        output_root: Path = Path(media_type.path).resolve()
+        db, format = media_type.db, media_type.format
+
+        # List & early exit
         files = self._list_files(input_root, exclude_dirs, match_patterns)
-        if not files or len(files) <= 0:
-            logger.warning(f"No source files found for {media_name}")
+        if not files:
+            logger.warning(f"No source files found for '{media_name}'")
             return
 
-        # move to temporary directory
-        if not self.config.temp_dir.exists():
-            self.config.temp_dir.mkdir(parents=True, exist_ok=True)
-        files = self._move_files(files, input_root, self.config.temp_dir / media_name)
+        # Optionally stage files in temp_dir
+        work_path = input_root
+        if use_temp:
+            temp_target = self.config.temp_dir / media_name
+            temp_target.mkdir(parents=True, exist_ok=True)
+            files = self._move_files(files, input_root, temp_target)
+            work_path = temp_target
 
-        # compute output path
-        output = self.config.categories[category].path  # e.g. /mnt/nas/Media/animes
-        if not output:
-            logger.error(f"Invalid category '{category}' for media '{media_name}'")
-            return
-        output = Path(output).resolve()  # resolve to absolute path
-
-        # db
-        db = self.config.categories[category].db
-
-        # format
-        format = self.config.categories[category].format
-        # run filebot
+        # Call FileBot
         try:
             self.filebot.rename(
-                path=str(self.config.temp_dir / media_name),
-                output=str(output),
+                path=str(work_path),
+                output=str(output_root),
                 filter=filter,
                 db=db,
                 manual_query=media_name,
@@ -71,9 +72,14 @@ class QBot:
                 format=format,
                 non_strict=is_fuzzy,
             )
-            self._cleanup_directory(self.config.temp_dir / media_name)
-        except Exception:
-            logger.error(f"Error renaming files for '{media_name}'")
+            # Cleanup
+            cleanup_target = work_path if use_temp else input_root
+            self._cleanup_directory(cleanup_target)
+        except Exception as exc:
+            logger.error(
+                f"Error renaming '{media_name}' "
+                f"({'temp' if use_temp else 'direct'}) -> {exc}"
+            )
 
     def _move_files(self, files: List[Path], input_root: Path, output_root: Path):
         result_files = []
