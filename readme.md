@@ -89,14 +89,26 @@ py-qbot ... --extra "EXCLUDE:sample;subs;extra_dir"
 If you're using qbittorrent, you can set up post‑processing scripts to call `py-qbot` automatically after downloads complete.
 Following assume you installed `py-qbot` in a virtual environment and is available in the `/root/py-qbot/venv/bin` directory.
 
+Create a script: `/usr/local/bin/qbot.sh`
 ```bash
-/root/py-qbot/venv/bin/py-qbot --config /root/py-qbot/config.json --input %F --name %N --category %L --extra %G --fuzzy
+#!/bin/bash
+export HOME="/root"
+exec /root/py-qbot/venv/bin/py-qbot "$@"
+```
+Make it executable:
+```bash
+chmod +x /usr/local/bin/qbot.sh
+```
+
+Then you can use the script in your qbittorrent settings for post‑processing.
+```bash
+qbot.sh --config /root/py-qbot/config.json --input %F --name %N --category %L --extra %G --fuzzy
 ```
 
 or shortened:
 
 ```bash
-/root/py-qbot/venv/bin/py-qbot --config /root/py-qbot/config.json -i %F -n %N -c %L --extra %G --fuzzy
+qbot.sh --config /root/py-qbot/config.json -i %F -n %N -c %L --extra %G --fuzzy
 ```
 
 where:

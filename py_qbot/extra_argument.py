@@ -40,4 +40,4 @@ class ExtraArgument:
         self.filter = parsed.get("FILTER")
         self.excludes = parsed.get("EXCLUDES", "").split(";") if parsed.get("EXCLUDES") else []
         self.name = parsed.get("NAME")
-        self.is_direct = parsed.get("IS_DIRECT", "false").lower() == "true"
+        self.is_direct = parsed.get("DIRECT", "false").lower() == "true"
