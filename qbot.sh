@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # find the real directory this script is in (follows symlinks)
 SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
